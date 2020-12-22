@@ -1,0 +1,42 @@
+sudo apt-get update 
+
+sudo apt-get install default-jdk 
+
+java –version 
+
+mkdir –p /opt/responsi 
+
+cd /opt/responsi 
+
+wget https://downloads.apache.org/spark/spark-2.4.7/spark- 2.4.7-bin-hadoop2.7.tgz 
+
+tar -xvf spark-2.4.7-bin-hadoop2.7.tgz 
+
+vi~/.bashrc 
+
+SPARK_HOME=/opt/spark/spark-2.4.5-bin-hadoop2.7
+export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+
+start-master.sh 
+
+ss –tunelp | grep 8080 
+
+pico input.text 
+
+spark-shell 
+
+val inputfile = sc.textFile(“input.txt”)
+
+val counts = inputfile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey(_+_);
+
+counts.cache()
+
+counts.saveAsTextFile("output")
+
+cd output/
+
+cat part-00000
+
+stop-slave.sh 
+
+stop-master.sh 
